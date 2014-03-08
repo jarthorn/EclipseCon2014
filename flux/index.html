@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Flux Overview</title>
+
+		<meta name="description" content="A presentation for EclipseCon 2014">
+		<meta name="author" content="John Artohrne">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="../reveal/css/reveal.min.css">
+		<link rel="stylesheet" href="../reveal/css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="../reveal/lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="../css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>A Brief Introduction to Flux</h1>
+					<h4>EclipseCon 2014</h4>
+					<a class="image">
+					<img src="images/contributions.png" >
+					</a>
+					<p>
+					<a href="http://blog.arthorne.com/">John Arthorne</a> / <a href="http://twitter.com/jarthorne">@jarthorne</a> / <a href="http://github.com/jarthorn">github.com/jarthorn</a>
+					<br>Eclipse PMC, Orion committer, IBM Canada
+					<br><a href="https://orionhub.org/git/git-repository.html#,cloneGitRepository=git://github.com/jarthorn/EclipseCon2014.git">Clone this talk</a>
+					</p>
+				</section>
+
+
+				<section>
+					<h1>What's a Flux?</h1>
+					<small>late Middle English: from Latin fluxus, from fluere ‘to flow.’</small>
+					<p>
+						<ol style="text-align:left;">
+							<li>the action or process of flowing</li>
+							<li>continuous change</li>
+							<li>a proposed new Eclipse project</li>
+							<li>a new architecture and infrastructure for integrating development tools across desktop, browser, and servers</li>
+						</ol>
+					</p>
+				</section>
+
+				<section>
+					<h1>Why Flux?</h1>
+					<ul>
+						<li>Strong pressure in industry towards cloud-based developer tools, particularly when deploying to cloud-based runtimes</li>
+						<li>Current browser-based tools showing promise but have significant gaps in functionality especially in area of compiled languages</li>
+						<li>Currently there is no story for integrating legacy tools or providing incremental migration from desktop tools to the cloud</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Project Goals</h1>
+					<ul>
+						<li>Design and implement a new architecture and infrastructure for integrating development tools across desktop, browser, and servers</li>
+						<li>Create cloud based tooling services that could be consumed by development environments across both desktop and web based environments</li>
+						<li>Build a strong ecosystem around this tooling service model including both open and vendor-specific tools</li>
+						<li>Initial code contribution from Pivotal including tooling service architecture, prototype browser-based Java tools and Eclipse integration</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Work Areas</h1>
+					<ul>
+						<li>Basic infrastructure: messaging system, repository synchronization</li>
+						<li>Java language tooling</li>
+						<li>JavaScript language tooling</li>
+						<li>Application deployment and execution services, possible debug integration</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Reasons for Dual Licensing</h1>
+					<ul>
+						<li>EPL for consumption at Eclipse, EDL (BSD) for Web and Node.js communities</li>
+						<li>Web/Node communities have come to expect liberal licenses (MIT or BSD)</li>
+						<li>Package boundaries blurred, making copyleft provisions of EPL unclear</li>
+						<li>JavaScript always distributed in source form so EPL disallows relicensing</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>EDL drawbacks</h1>
+					<ul>
+						<li>EDL doesn’t require to contribute back</li>
+						<li>In practice, it is up to the consumer to contribute back with EPL too</li>
+						<li>Investing real work to merge changes only happens where there is business interest, not because of a license</li>
+						<li>It is now common practice to make derivative works available via git clones whether required to or not</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Questions?</h1>
+						<img width="320" src="images/flux-capacitor.jpg" alt="Flux Capacitor">
+
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="../reveal/lib/js/head.min.js"></script>
+		<script src="../reveal/js/reveal.min.js"></script>
+
+		<script>
+			/*global Reveal hljs */
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: 'zoom', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: '../reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../reveal/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: '../reveal/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
