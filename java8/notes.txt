@@ -1,0 +1,107 @@
+My Perspective
+	- Designed APIs for various parts of Eclipse
+	- JFace, Team, Workspace, Jobs, Equinox, p2, e4, etc
+	- Was the manual implementation of API Tools before we automated it
+	- Believe APIs are 
+
+Talk Goals
+	- Not an introduction to Java 8 features
+	- Look at Java 8 features from API designer perspective
+	- How to add them to existing libraries in a compatible way
+	- Use when designing new APIs
+	
+Some Background
+	- APIs are interfaces with well specified and supported behavior
+	- Limit inter-component coupling
+	- Allow implementations to change without ripple effect
+	- A cover story to save you from having to tell the truth
+	
+API Prime Directives
+	- Binary compatibility: clients must continue to work without recompiling
+	- Contract compatibility: can weaken preconditions, strengthen postconditions
+	- Source compatibility: not required, but make reasonable efforts
+
+API Designer's Guide to Java Releases:
+	1. Ensure you run as expected on new version
+	2. Wait 5 years
+	3. Consider adopting new language features
+
+So Why Care About Java 8?
+	- Your clients may be using Java 8 right away
+	- Key Java 8 features are in method bodies, not API
+	- Finally some new tools for API designers
+	- Java 8 designed with compatibility in mind
+
+Static methods in interfaces
+	- Handy for convenience methods
+	- Binary compatible to add
+	- Require dependency on Java 8
+	- Conversion between static and default not compatible
+		
+Default Methods
+	- binary compatible to convert to default
+	- adding new default method: binary compatible, may break contract compatibility
+	- existing binaries will not see new default method overriding supertype
+	- revisit Interfaces vs Abstract Classes
+		- Interfaces:
+			- clean separation between API and implementation
+			- multiple inheritance, doesn't lock client into your class hierarchy
+			- can swap implementations cleanly
+		- Abstract classes:
+			- Can be extended in compatible way
+			- Provide access to factory methods, helper methods
+			- Private state and function
+		- Interface evolution
+			- Can't change an interface without breaking implementations
+			- deprecate-and-extend anti-pattern (IPerspectiveListener4, ITextViewerExtension8)
+			- switch to abstract class (IMoveDeleteHook -> TeamHook)
+			- Use parameter object to enable evolution (listeners)
+	- conclusion
+		- allows evolving an existing API where interfaces could be implemented by clients
+		- when designing a new API from scratch, marginal benefit over abstract classes
+			- enabling an interface to be a SAM type while also having helper methods
+			- only needed for interfaces implemented by clients
+			- don't have same visibility options
+
+Lambdas
+	- SAM types can be introduced without dependency on Java 8
+	- @FunctionalInterface is optional
+	- If you are adding dependency on Java 8:
+		- Use class library function types where possible
+		- For interface that is almost SAM, can convert all but one to default methods
+	- Making API lambda friendly: avoid splitting
+	- Not just syntactic sugar, actually compiles different
+	- Enabling function chaining
+
+Method References
+	- Can provide API methods with lambda implementations without overhead of added types
+	- Can also be done without Java 8 dependency
+
+Type Annotations
+	- Can now annotate type references
+	- Not directly applicable to API because references are not API
+	- Possibility of introducing new annotation types applicable to references
+	- Most common use is static analysis tools
+	- Use @Target to restrict usage
+	
+Other Annotation Changes
+	- Repeating annotations @Repeatable
+	- can add "this" as first formal method parameter
+	
+Streams
+	- internal vs external iteration
+	- consider providing stream-oriented view of your data structures
+
+Eclipse API examples:
+	- Job
+	- IContextFunction
+	- IResourceVisitor
+	- Many SWT events
+	
+Key Impressions
+	- New Java 8 features are easy to introduce
+	- Finally some tools to help evolve APIs
+	- Can start making your APIs Java 8 friendly without requiring Java 8
+	- Making effective use of Lambdas requires major mental shift for Java developers
+	- Oracle's Java 8 documentation rocks, always look there first
+	
