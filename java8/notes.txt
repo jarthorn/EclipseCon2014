@@ -37,45 +37,68 @@ Static methods in interfaces
 	- Binary compatible to add
 	- Require dependency on Java 8
 	- Conversion between static and default not compatible
-		
+
 Default Methods
+	Interfaces can now provide method bodies
+	Ideal for evolving existing interfaces implemented by clients
+	Somewhat limited: only public, no access to state
+	
+Compatibility of Default Methods
 	- binary compatible to convert to default
 	- adding new default method: binary compatible, may break contract compatibility
 	- existing binaries will not see new default method overriding supertype
-	- revisit Interfaces vs Abstract Classes
-		- Interfaces:
-			- clean separation between API and implementation
-			- multiple inheritance, doesn't lock client into your class hierarchy
-			- can swap implementations cleanly
-		- Abstract classes:
-			- Can be extended in compatible way
-			- Provide access to factory methods, helper methods
-			- Private state and function
-		- Interface evolution
-			- Can't change an interface without breaking implementations
-			- deprecate-and-extend anti-pattern (IPerspectiveListener4, ITextViewerExtension8)
-			- switch to abstract class (IMoveDeleteHook -> TeamHook)
-			- Use parameter object to enable evolution (listeners)
-	- conclusion
-		- allows evolving an existing API where interfaces could be implemented by clients
-		- when designing a new API from scratch, marginal benefit over abstract classes
-			- enabling an interface to be a SAM type while also having helper methods
-			- only needed for interfaces implemented by clients
-			- don't have same visibility options
+	- introducing ambiguous inheritance creates source incompatibility
+
+Interfaces vs Abstract Classes
+	- Interfaces:
+		- clean separation between API and implementation
+		- multiple inheritance, doesn't lock client into your class hierarchy
+		- can completely swap implementations
+	- Abstract classes:
+		- Can evolve without breaking subclasses
+		- Provide function that accesses/manipulates state
+		- Private state and function
+
+Interface Evolution
+	- Can't change an interface without breaking implementations
+	- Extend anti-pattern (IPerspectiveListener4, ITextViewerExtension8)
+	Solution: specify when interfaces should not be implemented by clients
+	Use abstract classes in cases where client extension is needed (IMoveDeleteHook -> TeamHook)
+	
+Interfaces With Default Methods
+	Abstract classes still much more powerful and flexible
+	Use on functional interfaces to maintain SAM restriction
+	Not needed for interfaces not implemented by clients
+	Main usage for evolving existing interfaces
 
 Lambdas
-	- SAM types can be introduced without dependency on Java 8
-	- @FunctionalInterface is optional
-	- If you are adding dependency on Java 8:
-		- Use class library function types where possible
-		- For interface that is almost SAM, can convert all but one to default methods
-	- Making API lambda friendly: avoid splitting
-	- Not just syntactic sugar, actually compiles different
-	- Enabling function chaining
+	Appear in API as interfaces with exactly one abstract method (SAM)
+	@FunctionalInterface is optional
+	Not just syntactic sugar: more efficient implementation
+	Encourages functional programming style
+
+Eclipse API examples:
+	Job
+	IContextFunction
+	IAdaptable
+	IResourceVisitor
+	Many SWT events
+	
+Functional Example: Alias Visitor
+
+APIs Requiring Java 8
+	Use class library function types where possible (java.util.function)
+	Use default methods as needed to ensure one abstract method
+
+Streams
+	Represent a pipeline on which a series of functions operate
+	Infinite, lazy
+	Don't modify underlying source
+	Consider providing stream-oriented view of your data structures
 
 Method References
 	- Can provide API methods with lambda implementations without overhead of added types
-	- Can also be done without Java 8 dependency
+	- Can be done without Java 8 dependency
 
 Type Annotations
 	- Can now annotate type references
@@ -88,15 +111,7 @@ Other Annotation Changes
 	- Repeating annotations @Repeatable
 	- can add "this" as first formal method parameter
 	
-Streams
-	- internal vs external iteration
-	- consider providing stream-oriented view of your data structures
 
-Eclipse API examples:
-	- Job
-	- IContextFunction
-	- IResourceVisitor
-	- Many SWT events
 	
 Key Impressions
 	- New Java 8 features are easy to introduce
