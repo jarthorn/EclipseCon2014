@@ -42,13 +42,49 @@
 					<p>
 					<a href="http://blog.arthorne.com/">John Arthorne</a> / <a href="http://twitter.com/jarthorne">@jarthorne</a> / <a href="http://github.com/jarthorn">github.com/jarthorn</a>
 					<br>Eclipse PMC, Orion committer, IBM Canada
-					<br><a href="https://orionhub.org/git/git-repository.html#,cloneGitRepository=git://github.com/jarthorn/EclipseCon2014.git">Clonnol102e this talk</a>
+					<br><a href="https://orionhub.org/git/git-repository.html#,cloneGitRepository=git://github.com/jarthorn/EclipseCon2014.git">Clone this talk</a>
 					</p>
 				</section>
 
 				<section>
-					<h1>Static Methods on Interface</h1>
+					<h1>Talk Goals</h1>
+					<ul>
+						<li>Not an introduction to Java 8 features</li>
+						<li>Look at Java 8 features from API designer perspective</li>
+						<li>How to add them to existing libraries in a compatible way</li>
+						<li>Use when designing new APIs</li>
+					</ul>
 				</section>
+
+				<section>
+					<h1>Role of API</h1>
+					<ul>
+						<li>Interfaces with well specified and supported behavior</li>
+						<li>Limit inter-component coupling</li>
+						<li>Allow implementations to change without ripple effect</li>
+						<li>A cover story to save you from having to tell the truth</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Forms of Compatibility</h1>
+					<ul>
+						<li>Binary: clients must continue to work without recompiling</li>
+						<li>Contract: can weaken preconditions, strengthen postconditions</li>
+						<li>Environment: avoid increasing restrictions on runtime environment</li>
+						<li>Source: not required, but make reasonable efforts</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>API Designer's Guide to Java Releases</h1>
+					<ol>
+						<li>Ensure you run properly on new version</li>
+						<li>Wait 5 years</li>
+						<li>Consider adopting new language features</li>
+					</ol>
+				</section>
+					
 				<section>
 					<h1>THE END</h1>
 					<h3>BY John Arthorne</h3>
