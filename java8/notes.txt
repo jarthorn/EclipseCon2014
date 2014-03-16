@@ -20,6 +20,7 @@ API Prime Directives
 	- Binary compatibility: clients must continue to work without recompiling
 	- Contract compatibility: can weaken preconditions, strengthen postconditions
 	- Source compatibility: not required, but make reasonable efforts
+	- Environment compatibility: avoid increasing restrictions on runtime environment
 
 API Designer's Guide to Java Releases:
 	1. Ensure you run as expected on new version
