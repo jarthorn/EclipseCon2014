@@ -47,7 +47,7 @@
 				</section>
 
 				<section>
-					<h1>Talk Goals</h1>
+					<h2>Talk Goals</h2>
 					<ul>
 						<li>Not an introduction to Java 8 features</li>
 						<li>Look at Java 8 features from API designer perspective</li>
@@ -57,7 +57,7 @@
 				</section>
 
 				<section>
-					<h1>Role of API</h1>
+					<h2>Role of API</h2>
 					<ul>
 						<li>Interfaces with well specified and supported behavior</li>
 						<li>Limit inter-component coupling</li>
@@ -67,7 +67,7 @@
 				</section>
 
 				<section>
-					<h1>Forms of Compatibility</h1>
+					<h2>Forms of Compatibility</h2>
 					<ul>
 						<li>Binary: clients must continue to work without recompiling</li>
 						<li>Contract: can weaken preconditions, strengthen postconditions</li>
@@ -77,14 +77,199 @@
 				</section>
 
 				<section>
-					<h1>API Designer's Guide to Java Releases</h1>
+					<h2>API Designer's Guide to Java Releases</h2>
 					<ol>
 						<li>Ensure you run properly on new version</li>
 						<li>Wait 5 years</li>
 						<li>Consider adopting new language features</li>
 					</ol>
 				</section>
-					
+
+				<section>
+					<h2>So Why Care About Java 8?</h2>
+					<ul>
+						<li>Your clients may be using Java 8 right away</li>
+						<li>Key Java 8 features are in method bodies, not API</li>
+						<li>Finally some new tools for API designers</li>
+						<li>Java 8 designed with compatibility in mind</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>New Feature Summary</h2>
+					<ul>
+						<li>Methods with bodies in interfaces</li>
+						<li>Lambda Expressions</li>
+						<li>Method references</li>
+						<li>Streams</li>
+						<li>Annotations on type references</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Static methods in interfaces</h2>
+					<ul>
+						<li>Handy for convenience methods</li>
+						<li>Binary compatible to add</li>
+						<li>Require dependency on Java 8</li>
+						<li>Conversion between static and default not compatible</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Default Methods</h2>
+					<ul>
+						<li>Interfaces can now provide method bodies</li>
+						<li>Ideal for evolving existing interfaces implemented by clients</li>
+						<li>Somewhat limited: only public, no access to state</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Compatibility of Default Methods</h2>
+					<ul>
+						<li>Binary compatible to convert to default</li>
+						<li>Adding new default method: binary compatible, may break contract compatibility</li>
+						<li>Existing binaries will not see new default method overriding supertype</li>
+						<li>Introducing ambiguous inheritance creates source incompatibility</li>
+					</ul>
+				</section>
+	
+				<section>
+					<h2>Interfaces vs Abstract Classes</h2>
+					<ul>
+						<li>Interfaces:
+							<ul>
+								<li>Clean separation between API and implementation</li>
+								<li>Multiple inheritance, doesn't lock client into your class hierarchy</li>
+								<li>Can completely swap implementations</li>
+							</ul>
+						</li>
+						<li>Abstract classes:
+							<ul>
+								<li>Can evolve without breaking subclasses</li>
+								<li>Provide function that accesses/manipulates state</li>
+								<li>Private state and function</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Interface Evolution</h2>
+					<ul>
+						<li>Can't change an interface without breaking implementations</li>
+						<li>Anti-pattern: IPerspectiveListener4, ITextViewerExtension8</li>
+						<li>Solution: specify when interfaces should not be implemented by clients</li>
+						<li>Use abstract classes in cases where client extension is needed (IMoveDeleteHook -> TeamHook)
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Interfaces With Default Methods</h2>
+					<ul>
+						<li>Abstract classes still much more powerful and flexible</li>
+						<li>Use on functional interfaces to maintain SAM restriction</li>
+						<li>Not needed for interfaces not implemented by clients</li>
+						<li>Main usage for evolving existing interfaces</li>
+					</ul>
+				</section>
+	
+				<section>
+					<h2>Lambda Expressions</h2>
+					<ul>
+						<li>Appear in API as interfaces with exactly one abstract method (SAM)</li>
+						<li>@FunctionalInterface is optional</li>
+						<li>Not just syntactic sugar: more efficient implementation</li>
+						<li>Encourages functional programming style</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Eclipse API examples</h2>
+					<ul>
+						<li>Many SWT events</li>
+						<li>Job</li>
+						<li>IContextFunction</li>
+						<li>IAdaptable</li>
+						<li>IResourceVisitor</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Functional Example: Alias Visitor</h2>
+					<ul>
+						<li></li>
+					</ul>
+				</section>
+	
+
+				<section>
+					<h2>Once you require Java 8</h2>
+					<ul>
+						<li>Use class library function types where possible (java.util.function)</li>
+						<li>Use default methods as needed to ensure one abstract method</li>
+					</ul>
+				</section>
+	
+				<section>
+					<h2>Streams</h2>
+					<ul>
+						<li>Represent a pipeline on which a series of functions operate</li>
+						<li>Infinite, lazy</li>
+						<li>Don't modify underlying source</li>
+						<li>Consider providing stream-oriented view of your data structures</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Title</h2>
+					<ul>
+						<li>Method References</li>
+						<li>Can provide API methods with lambda implementations without overhead of added types</li>
+						<li>Can be done without Java 8 dependency</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Type Annotations</h2>
+					<ul>
+						<li>Can now annotate type references</li>
+						<li>Not directly applicable to API because references are not API</li>
+						<li>Possibility of introducing new annotation types applicable to references</li>
+						<li>Most common use is static analysis tools</li>
+						<li>Use @Target to restrict usage</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Other Annotation Changes</h2>
+					<ul>
+						<li>Repeating annotations @Repeatable</li>
+						<li>Converting existing annotation to repeatable is compatible</li>
+						<li>Can add "this" as first formal method parameter</li>
+					</ul>
+				</section>
+	
+				<section>
+					<h2>Key Impressions</h2>
+					<ul>
+						<li>New Java 8 features are easy to introduce</li>
+						<li>Finally some tools to help evolve APIs</li>
+						<li>Can start making your APIs Java 8 friendly without requiring Java 8</li>
+						<li>Making effective use of Lambdas requires major mental shift for Java developers</li>
+						<li>Oracle's Java 8 documentation rocks, always look there first</li>
+					</ul>
+				</section>
+	
+				<section>
+					<h2>Title</h2>
+					<ul>
+						<li></li>
+					</ul>
+				</section>
+	
 				<section>
 					<h1>THE END</h1>
 					<h3>BY John Arthorne</h3>

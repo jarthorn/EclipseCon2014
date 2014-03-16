@@ -112,8 +112,6 @@ Other Annotation Changes
 	- Repeating annotations @Repeatable
 	- can add "this" as first formal method parameter
 	
-
-	
 Key Impressions
 	- New Java 8 features are easy to introduce
 	- Finally some tools to help evolve APIs
