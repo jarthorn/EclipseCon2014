@@ -98,84 +98,14 @@
 				<section>
 					<h2>New Feature Summary</h2>
 					<ul>
-						<li>Methods with bodies in interfaces</li>
-						<li>Lambda Expressions</li>
+						<li>Lambda expressions</li>
 						<li>Method references</li>
 						<li>Streams</li>
+						<li>Interfaces with method bodies</li>
 						<li>Annotations on type references</li>
 					</ul>
 				</section>
 
-				<section>
-					<h2>Static methods in interfaces</h2>
-					<ul>
-						<li>Handy for convenience methods</li>
-						<li>Binary compatible to add</li>
-						<li>Require dependency on Java 8</li>
-						<li>Conversion between static and default not compatible</li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>Default Methods</h2>
-					<ul>
-						<li>Interfaces can now provide method bodies</li>
-						<li>Ideal for evolving existing interfaces implemented by clients</li>
-						<li>Somewhat limited: only public, no access to state</li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>Compatibility of Default Methods</h2>
-					<ul>
-						<li>Binary compatible to convert to default</li>
-						<li>Adding new default method: binary compatible, may break contract compatibility</li>
-						<li>Existing binaries will not see new default method overriding supertype</li>
-						<li>Introducing ambiguous inheritance creates source incompatibility</li>
-					</ul>
-				</section>
-	
-				<section>
-					<h2>Interfaces vs Abstract Classes</h2>
-					<ul>
-						<li>Interfaces:
-							<ul>
-								<li>Clean separation between API and implementation</li>
-								<li>Multiple inheritance, doesn't lock client into your class hierarchy</li>
-								<li>Can completely swap implementations</li>
-							</ul>
-						</li>
-						<li>Abstract classes:
-							<ul>
-								<li>Can evolve without breaking subclasses</li>
-								<li>Provide function that accesses/manipulates state</li>
-								<li>Private state and function</li>
-							</ul>
-						</li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>Interface Evolution</h2>
-					<ul>
-						<li>Can't change an interface without breaking implementations</li>
-						<li>Anti-pattern: IPerspectiveListener4, ITextViewerExtension8</li>
-						<li>Solution: specify when interfaces should not be implemented by clients</li>
-						<li>Use abstract classes in cases where client extension is needed (IMoveDeleteHook -> TeamHook)
-						</li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>Interfaces With Default Methods</h2>
-					<ul>
-						<li>Abstract classes still much more powerful and flexible</li>
-						<li>Use on functional interfaces to maintain SAM restriction</li>
-						<li>Not needed for interfaces not implemented by clients</li>
-						<li>Main usage for evolving existing interfaces</li>
-					</ul>
-				</section>
-	
 				<section>
 					<h2>Lambda Expressions</h2>
 					<ul>
@@ -268,6 +198,8 @@ private int doCount(IResource root) {
 						<li>Represent a pipeline on which a series of functions operate</li>
 						<li>Infinite, lazy</li>
 						<li>Don't modify underlying source</li>
+						<li>Provide filter, collect, map, reduce, sort</li>
+						<li>Enables parallel execution via spliterator</li>
 						<li>Consider providing stream-oriented view of your data structures</li>
 					</ul>
 				</section>
@@ -277,6 +209,76 @@ private int doCount(IResource root) {
 					<ul>
 						<li>Can provide API methods with lambda implementations without overhead of added types</li>
 						<li>Can be done without Java 8 dependency</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Static methods in interfaces</h2>
+					<ul>
+						<li>Handy for convenience methods</li>
+						<li>Binary compatible to add</li>
+						<li>Require dependency on Java 8</li>
+						<li>Conversion between static and default not compatible</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Default Methods</h2>
+					<ul>
+						<li>Interfaces can now provide method bodies</li>
+						<li>Ideal for evolving existing interfaces implemented by clients</li>
+						<li>Somewhat limited: only public, no access to state</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Compatibility of Default Methods</h2>
+					<ul>
+						<li>Binary compatible to convert to default</li>
+						<li>Adding new default method: binary compatible, may break contract compatibility</li>
+						<li>Existing binaries will not see new default method overriding supertype</li>
+						<li>Introducing ambiguous inheritance creates source incompatibility</li>
+					</ul>
+				</section>
+	
+				<section>
+					<h2>Interfaces vs Abstract Classes</h2>
+					<ul>
+						<li>Interfaces:
+							<ul>
+								<li>Clean separation between API and implementation</li>
+								<li>Multiple inheritance, doesn't lock client into your class hierarchy</li>
+								<li>Can completely swap implementations</li>
+							</ul>
+						</li>
+						<li>Abstract classes:
+							<ul>
+								<li>Can evolve without breaking subclasses</li>
+								<li>Provide function that accesses/manipulates state</li>
+								<li>Private state and function</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Interface Evolution</h2>
+					<ul>
+						<li>Can't change an interface without breaking implementations</li>
+						<li>Anti-pattern: IPerspectiveListener4, ITextViewerExtension8</li>
+						<li>Solution: specify when interfaces should not be implemented by clients</li>
+						<li>Use abstract classes in cases where client extension is needed (IMoveDeleteHook -> TeamHook)
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Interfaces With Default Methods</h2>
+					<ul>
+						<li>Abstract classes still much more powerful and flexible</li>
+						<li>Use on functional interfaces to maintain SAM restriction</li>
+						<li>Not needed for interfaces not implemented by clients</li>
+						<li>Main usage for evolving existing interfaces</li>
 					</ul>
 				</section>
 
@@ -297,9 +299,15 @@ private int doCount(IResource root) {
 						<li>Repeating annotations @Repeatable</li>
 						<li>Converting existing annotation to repeatable is compatible</li>
 						<li>Can add "this" as first formal method parameter</li>
-						<li>Only useful to add annotations on receiver</li>
 						<li>Adding "this" parameter is binary compatible</li>
 					</ul>
+					<pre><code data-trim contenteditable>
+public class Dragon implements Animal{
+  public String roar(Dragon this) {
+    return "Roar!";
+  }
+}
+					</code></pre>
 				</section>
 	
 				<section>
