@@ -179,7 +179,7 @@
 				<section>
 					<h2>Lambda Expressions</h2>
 					<ul>
-						<li>Appear in API as interfaces with exactly one abstract method (SAM)</li>
+						<li>Appear in API as interfaces with exactly one abstract method</li>
 						<li>@FunctionalInterface is optional</li>
 						<li>Not just syntactic sugar: more efficient implementation</li>
 						<li>Encourages functional programming style</li>
@@ -187,23 +187,72 @@
 				</section>
 
 				<section>
-					<h2>Eclipse API examples</h2>
-					<ul>
-						<li>Many SWT events</li>
-						<li>Job</li>
-						<li>IContextFunction</li>
-						<li>IAdaptable</li>
-						<li>IResourceVisitor</li>
-					</ul>
+					<h2>Gotcha: Ambiguous References</h2>
+					<pre><code data-trim contenteditable>
+public void accept(IResourceProxyVisitor v, int d, int f)
+...
+public void accept(IResourceVisitor v, int d, int f)
+...
+//error: ambiguous reference
+resource.accept(res->true, IResource,DEPTH_INFINITE, IResource.NONE);
+					</code></pre>
+					Binary compatible but not source compatible
 				</section>
 
 				<section>
-					<h2>Functional Example: Alias Visitor</h2>
+					<h2>Functional Example: Resource Visitor</h2>
+					<pre><code data-trim contenteditable>
+private int doCount(IResource root) {
+  int count = 1;
+  if (root instanceof IContainer) {
+    IResource[] kids = ((IContainer) root).members();
+    for (IResource resource : kids) {
+      count += doCount(resource);
+    }
+  }
+  return count;
+}
+					</code></pre>
+					180 milliseconds to count 28,000 resources
+				</section>
+
+				<section>
+					<h2>Functional Example: Resource Visitor</h2>
+					<pre><code data-trim contenteditable>
+private int doCount(IResource root) {
+  final int[] count = new int[] {0};
+  root.accept(proxy -> ++count[0] > 0, IResource.NONE); 
+  return count[0];
+}
+					</code></pre>
+					5 milliseconds to count 28,000 resources (36x faster)
+				</section>
+
+				<section>
+					<h2>Why is it faster?</h2>
 					<ul>
-						<li></li>
+						<li>Less garbage</li>
+						<li>Direct walk over data structure</li>
+					</ul>
+					<br>
+					<br>
+					<p>
+					This is nothing to do with lambda expressions, but demonstrates advantage of defining lambda-friendly API
+					</p>
+				</section>
+
+				<section>
+					<h2>More Eclipse Examples</h2>
+					<ul>
+						<li>Most listener APIs</li>
+						<li>Job / IJobFunction</li>
+						<li>IContextFunction</li>
+						<li>IAdaptable</li>
+						<li>IResourceVisitor</li>
+						<li>IWorkspaceRunnable</li>
+						<li>IRunnableWithProgress</li>
 					</ul>
 				</section>
-	
 
 				<section>
 					<h2>Once you require Java 8</h2>
@@ -224,9 +273,8 @@
 				</section>
 
 				<section>
-					<h2>Title</h2>
+					<h2>Method References</h2>
 					<ul>
-						<li>Method References</li>
 						<li>Can provide API methods with lambda implementations without overhead of added types</li>
 						<li>Can be done without Java 8 dependency</li>
 					</ul>
@@ -249,6 +297,8 @@
 						<li>Repeating annotations @Repeatable</li>
 						<li>Converting existing annotation to repeatable is compatible</li>
 						<li>Can add "this" as first formal method parameter</li>
+						<li>Only useful to add annotations on receiver</li>
+						<li>Adding "this" parameter is binary compatible</li>
 					</ul>
 				</section>
 	
