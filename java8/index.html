@@ -128,19 +128,6 @@
 				</section>
 
 				<section>
-					<h2>Gotcha: Ambiguous References</h2>
-					<pre><code data-trim contenteditable>
-public void accept(IResourceProxyVisitor v, int d, int f)
-...
-public void accept(IResourceVisitor v, int d, int f)
-...
-//error: ambiguous reference
-resource.accept(res->true, IResource,DEPTH_INFINITE, IResource.NONE);
-					</code></pre>
-					Binary compatible but not source compatible
-				</section>
-
-				<section>
 					<h2>Functional Example: Resource Visitor</h2>
 					<pre><code data-trim contenteditable>
 private int doCount(IResource root) {
@@ -200,8 +187,22 @@ private int doCount(IResource root) {
 					<h2>Once you require Java 8</h2>
 					<ul>
 						<li>Use class library function types where possible (java.util.function)</li>
+						<li>Use consistent terms: Function, Consumer, Supplier, Predicate, BinaryOperator</li>
 						<li>Use default methods as needed to ensure one abstract method</li>
 					</ul>
+				</section>
+
+				<section>
+					<h2>Gotcha: Ambiguous References</h2>
+					<pre><code data-trim contenteditable>
+public void accept(IResourceProxyVisitor v, int d, int f)
+...
+public void accept(IResourceVisitor v, int d, int f)
+...
+//error: ambiguous reference
+resource.accept(res->true, IResource,DEPTH_INFINITE, IResource.NONE);
+					</code></pre>
+					Binary compatible but not source compatible
 				</section>
 	
 				<section>
@@ -221,6 +222,12 @@ private int doCount(IResource root) {
 					<ul>
 						<li>Can provide API methods that implement common functions</li>
 						<li>Clients can use method references to invoke them</li>
+							<ul>
+								<li>Reference static method</li>
+								<li>Reference instance method on an object</li>
+								<li>Reference instance method on objects of a given type</li>
+								<li>Constructor references</li>
+							</ul>
 						<li>Can be done without Java 8 dependency</li>
 					</ul>
 				</section>
@@ -230,11 +237,11 @@ private int doCount(IResource root) {
 					<pre><code data-trim contenteditable>
 public class ResourceCounter {
   private int count = 0;
-  public boolean countResources(IResourceProxy proxy) {
+  public boolean countResources(IResource resource) {
     count++;
     return true;
   }
-  public boolean countFiles(IResourceProxy proxy) {
+  public boolean countFiles(IResource resource) {
     if (proxy.getType() == IResource.FILE)
       count++;
     return true;
@@ -254,7 +261,7 @@ public class ResourceCounter {
 				</ul>
 					<pre><code data-trim contenteditable>
 ResourceCounter counter = new ResourceCounter();
-root.accept(counter::countResources, IResource.NONE);
+root.accept(counter::countResources);
 return counter.getCount();
 				</code></pre>
 				</section>
@@ -276,6 +283,13 @@ return counter.getCount();
 						<li>Ideal for evolving existing interfaces implemented by clients</li>
 						<li>Somewhat limited: only public, no access to state</li>
 					</ul>
+					<pre><code data-trim contenteditable>
+public interface Comparator&lt;T&gt; {
+  default Comparator&lt;T&gt; thenComparing(Comparator&lt;? super T&gt; other) { ... }
+}
+Comparator&lt;String&gt; cmp = Comparator.comparingInt(String:length)
+  .thenComparing(String.CASE_INSENSITIVE_ORDER);
+</code></pre>
 				</section>
 
 				<section>
@@ -331,12 +345,16 @@ return counter.getCount();
 
 				<section>
 					<h2>Type Annotations</h2>
+					<pre><code data-trim contenteditable>
+public String findOldest(List&lt;@ReadOnly String&gt; list) 
+  throws @Fatal IllegalStateException { ... }
+</code></pre>
 					<ul>
-						<li>Can now annotate type references</li>
-						<li>Annotate method parameters, return types, throws clauses</li>
-						<li>Possibility of introducing new annotation types applicable to references</li>
+						<li>Can annotate type references in your API signatures</li>
+						<li>Can add  new annotation types in your API for these contexts</li>
+						<li>Use @Target to indicate where annotation can be used</li>
 						<li>Most common use is static analysis tools</li>
-						<li>Use @Target to restrict usage</li>
+						<li>Feels incomplete: no built in annotations, no class library integration</li>
 					</ul>
 				</section>
 
@@ -362,22 +380,16 @@ public class Dragon implements Animal{
 					<ul>
 						<li>New Java 8 features are easy to introduce</li>
 						<li>Finally some tools to help evolve APIs</li>
-						<li>Can start making your APIs Java 8 friendly without requiring Java 8</li>
-						<li>Making effective use of Lambdas requires major mental shift for Java developers</li>
+						<li>Can start making your APIs Java 8 friendly without Java 8</li>
+						<li>Complete integration with Java class libraries</li>
 						<li>Oracle's Java 8 documentation rocks, always look there first</li>
 					</ul>
 				</section>
 	
 				<section>
-					<h2>Title</h2>
-					<ul>
-						<li></li>
-					</ul>
-				</section>
-	
-				<section>
 					<h1>THE END</h1>
-					<h3>BY John Arthorne</h3>
+					<a href="http://blog.arthorne.com/">John Arthorne</a> / <a href="http://twitter.com/jarthorne">@jarthorne</a> / <a href="http://github.com/jarthorn">github.com/jarthorn</a>
+					<br>Eclipse PMC, Orion committer, IBM Canada
 				</section>
 
 			</div>
