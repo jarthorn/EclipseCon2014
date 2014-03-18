@@ -57,12 +57,13 @@
 				</section>
 
 				<section>
-					<h2>Role of API</h2>
+					<h2>Why do we define API?</h2>
 					<ul>
-						<li>Interfaces with well specified and supported behavior</li>
+						<li>Provide a well specified and supported building block</li>
 						<li>Limit inter-component coupling</li>
 						<li>Allow implementations to change without ripple effect</li>
 						<li>A cover story to save you from having to tell the truth</li>
+						<li>Stability is paramount</li>
 					</ul>
 				</section>
 
@@ -109,10 +110,20 @@
 				<section>
 					<h2>Lambda Expressions</h2>
 					<ul>
-						<li>Appear in API as interfaces with exactly one abstract method</li>
+						<li>Lambda expressions will appear in client code, not API</li>
+						<li>An interface with exactly one abstract method can be represented as lambda</li>
 						<li>@FunctionalInterface is optional</li>
-						<li>Not just syntactic sugar: more efficient implementation</li>
 						<li>Encourages functional programming style</li>
+						<li>Your clients can use this today</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Lambda != inner class</h2>
+					<ul>
+						<li>Not just syntactic sugar!!</li>
+						<li>Typically no class file created for lambda</li>
+						<li>Compiled into <tt>invokedynamic</tt> byte code that can be optimized further by JVM</li>
 					</ul>
 				</section>
 
@@ -161,18 +172,19 @@ private int doCount(IResource root) {
 				<section>
 					<h2>Why is it faster?</h2>
 					<ul>
-						<li>Less garbage</li>
-						<li>Direct walk over data structure</li>
+						<li>Described what we wanted, rather than how</li>
+						<li>Implemented with direct walk over data structure</li>
+						<li>Vastly less garbage</li>
 					</ul>
 					<br>
 					<br>
 					<p>
-					This is nothing to do with lambda expressions, but demonstrates advantage of defining lambda-friendly API
+					This is nothing to do with lambda expressions, but demonstrates advantage of functional style
 					</p>
 				</section>
 
 				<section>
-					<h2>More Eclipse Examples</h2>
+					<h2>Many Eclipse Examples</h2>
 					<ul>
 						<li>Most listener APIs</li>
 						<li>Job / IJobFunction</li>
@@ -207,9 +219,44 @@ private int doCount(IResource root) {
 				<section>
 					<h2>Method References</h2>
 					<ul>
-						<li>Can provide API methods with lambda implementations without overhead of added types</li>
+						<li>Can provide API methods that implement common functions</li>
+						<li>Clients can use method references to invoke them</li>
 						<li>Can be done without Java 8 dependency</li>
 					</ul>
+				</section>
+
+				<section>
+					<h2>Method Reference Example</h2>
+					<pre><code data-trim contenteditable>
+public class ResourceCounter {
+  private int count = 0;
+  public boolean countResources(IResourceProxy proxy) {
+    count++;
+    return true;
+  }
+  public boolean countFiles(IResourceProxy proxy) {
+    if (proxy.getType() == IResource.FILE)
+      count++;
+    return true;
+  }
+  public int getCount() {
+    return count;
+  }
+}
+				</code></pre>
+				</section>
+
+				<section>
+					<h2>Method Reference Example</h2>
+				<ul>
+					<li>Method reference appears in client code</li>
+					<li>None of the API involved has Java 8 dependency</li>
+				</ul>
+					<pre><code data-trim contenteditable>
+ResourceCounter counter = new ResourceCounter();
+root.accept(counter::countResources, IResource.NONE);
+return counter.getCount();
+				</code></pre>
 				</section>
 
 				<section>
@@ -286,7 +333,7 @@ private int doCount(IResource root) {
 					<h2>Type Annotations</h2>
 					<ul>
 						<li>Can now annotate type references</li>
-						<li>Not directly applicable to API because references are not API</li>
+						<li>Annotate method parameters, return types, throws clauses</li>
 						<li>Possibility of introducing new annotation types applicable to references</li>
 						<li>Most common use is static analysis tools</li>
 						<li>Use @Target to restrict usage</li>
