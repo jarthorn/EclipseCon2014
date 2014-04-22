@@ -272,6 +272,8 @@ return counter.getCount();
 
 				<section>
 					<h2>Static methods in interfaces</h2>
+					<q>&ldquo;Not even the fifth most exciting thing in Java 8&rdquo;</q> - Alex Buckley
+					<br><br>
 					<ul>
 						<li>Handy for convenience methods</li>
 						<li>Binary compatible to add</li>
@@ -301,7 +303,6 @@ Comparator&lt;String&gt; cmp = Comparator.comparingInt(String:length)
 					<ul>
 						<li>Binary compatible to convert to default</li>
 						<li>Adding new default method: binary compatible, may break contract compatibility</li>
-						<li>Existing binaries will not see new default method overriding supertype</li>
 						<li>Introducing ambiguous inheritance creates source incompatibility</li>
 					</ul>
 				</section>
